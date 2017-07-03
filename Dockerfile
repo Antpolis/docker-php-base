@@ -34,8 +34,7 @@ RUN apt-get install -y \
   curl  \
   wget \
   nano \
-  vim \
-  nginx
+  vim
 
 WORKDIR /tmp
 
@@ -52,13 +51,15 @@ RUN npm install -g bower webpack gulp-cli grunt-cli
 
 RUN apt-get autoclean && apt-get autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-EXPOSE 80 443
+EXPOSE 9000
 
 RUN mkdir /run/php
 
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+RUN sed -i 's/\;daemonize = yes/daemonize = no/' /etc/php/7.0/fpm/php-fpm.conf
+COPY www.conf /etc/php/7.0/fpm/pool.d/www.conf
+
 
 WORKDIR /var/www/html
 VOLUME /var/www/html
 
-CMD service php7.0-fpm start && nginx
+CMD /usr/sbin/php-fpm7.0
