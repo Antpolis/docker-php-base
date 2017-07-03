@@ -49,6 +49,11 @@ RUN mkdir /run/php
 
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
+RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+RUN apt-get -y update && apt-get install -y nodejs
+
+RUN npm install -g bower
+
 WORKDIR /var/www/html
 VOLUME /var/www/html
 
