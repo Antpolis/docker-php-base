@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-MAINTAINER Chris Sim
+MAINTAINER Chris Sim <chris.sim@dailyvanity.sg>
 
 RUN apt-get -y update && apt-get install -y python-software-properties software-properties-common
 
@@ -37,9 +37,18 @@ RUN apt-get install -y \
   vim \
   nginx
 
-RUN apt-get -y update && apt-get -y upgrade
+WORKDIR /tmp
+
+RUN wget https://deb.nodesource.com/setup_6.x
+RUN chmod +x setup_6.x
+RUN ./setup_6.x
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+
+RUN apt-get -y update && apt-get -y install nodejs yarn && apt-get -y upgrade
 
 RUN curl https://getcomposer.org/installer | php -- && mv composer.phar /usr/local/bin/composer && chmod +x /usr/local/bin/composer
+RUN npm install -g bower webpack gulp-cli grunt-cli
 
 RUN apt-get autoclean && apt-get autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -48,11 +57,6 @@ EXPOSE 80 443
 RUN mkdir /run/php
 
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-
-RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-RUN apt-get -y update && apt-get install -y nodejs
-
-RUN npm install -g bower
 
 WORKDIR /var/www/html
 VOLUME /var/www/html
