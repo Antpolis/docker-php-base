@@ -35,6 +35,7 @@ RUN apk --update add \
     php7-pear \
     openssl \
     ca-certificates \
+    git \
     wget \
     nodejs \ 
     nodejs-npm
