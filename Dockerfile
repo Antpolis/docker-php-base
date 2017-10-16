@@ -54,4 +54,5 @@ RUN composer global require "fxp/composer-asset-plugin:^1.3.1"
 WORKDIR /var/www/html
 VOLUME /var/www/html
 
-CMD ["php-fpm7.0","--allow-to-run-as-root"]
+COPY ./www.conf /etc/php7/php-fpm.d/
+CMD ["php-fpm7","--allow-to-run-as-root"]
