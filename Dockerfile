@@ -1,65 +1,58 @@
-FROM ubuntu:16.04
-MAINTAINER Chris Sim <chris.sim@dailyvanity.sg>
+FROM alpine:3.6
 
-RUN apt-get -y update && apt-get install -y python-software-properties software-properties-common
-
-RUN apt-get install -y \
-  build-essential \
-  imagemagick \
-  libpcre3 \
-  php7.0 \
-  php7.0-cli \
-  php7.0-dev \
-  php7.0-bcmath \
-  php7.0-bz2 \
-  php7.0-mysql \
-  php7.0-mbstring \
-  php7.0-mcrypt \
-  php7.0-gd \
-  php-imagick \
-  php7.0-curl \
-  php7.0-intl \
-  php7.0-common \
-  php7.0-json \
-  php7.0-opcache \
-  php7.0-recode \
-  php7.0-soap \
-  php7.0-xml \
-  php7.0-zip \
-  php7.0-opcache \
-  php-apcu \
-  php-gettext \
-  git \
-  rsyslog \
-  curl  \
-  wget \
-  nano \
-  vim
+RUN apk --update add \
+    php7 \
+    php7-bcmath \
+    php7-dom \
+    php7-ctype \
+    php7-curl \
+    php7-fileinfo \
+    php7-fpm \
+    php7-gd \
+    php7-iconv \
+    php7-intl \
+    php7-json \
+    php7-mbstring \
+    php7-mcrypt \
+    php7-mysqli \
+    php7-opcache \
+    php7-openssl \
+    php7-redis \
+    php7-pdo \
+    php7-pdo_mysql \
+    php7-pdo_pgsql \
+    php7-pdo_sqlite \
+    php7-phar \
+    php7-posix \
+    php7-session \
+    php7-soap \
+    php7-xml \
+    php7-zlib \
+    php7-xmlreader \
+    php7-xmlwriter \
+    php7-zip \
+    php7-dev \
+    php7-pear \
+    openssl \
+    ca-certificates \
+    git \
+    wget \
+    nodejs \ 
+    nodejs-npm
 
 WORKDIR /tmp
 
-RUN wget https://deb.nodesource.com/setup_6.x
-RUN chmod +x setup_6.x
-RUN ./setup_6.x
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-
-RUN apt-get -y update && apt-get -y install nodejs yarn && apt-get -y upgrade
-
-RUN curl https://getcomposer.org/installer | php -- && mv composer.phar /usr/local/bin/composer && chmod +x /usr/local/bin/composer
+RUN wget https://getcomposer.org/installer && php installer && mv composer.phar /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 RUN npm install -g bower webpack gulp-cli grunt-cli
 
-RUN apt-get autoclean && apt-get autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
 EXPOSE 9000
+RUN mkdir /run/php && mkdir -p /var/www/html && rm -rf /tmp/*
 
-RUN mkdir /run/php
-
-RUN sed -i 's/\;daemonize = yes/daemonize = no/' /etc/php/7.0/fpm/php-fpm.conf
-COPY www.conf /etc/php/7.0/fpm/pool.d/www.conf
-
+RUN sed -i 's/\;daemonize = yes/daemonize = no/' /etc/php7/php-fpm.conf
+RUN composer global require "fxp/composer-asset-plugin:^1.3.1"
 
 WORKDIR /var/www/html
-VOLUME /var/www/html
 
-CMD /usr/sbin/php-fpm7.0
+
+COPY ./www.conf /etc/php7/php-fpm.d/
+CMD ["php-fpm7","--allow-to-run-as-root"]
