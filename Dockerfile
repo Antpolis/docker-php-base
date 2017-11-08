@@ -52,7 +52,7 @@ RUN sed -i 's/\;daemonize = yes/daemonize = no/' /etc/php7/php-fpm.conf
 RUN composer global require "fxp/composer-asset-plugin:^1.3.1"
 
 WORKDIR /var/www/html
-VOLUME /var/www/html
+
 
 COPY ./www.conf /etc/php7/php-fpm.d/
 CMD ["php-fpm7","--allow-to-run-as-root"]
