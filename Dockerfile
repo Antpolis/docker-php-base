@@ -1,73 +1,61 @@
-FROM ubuntu:16.04
-MAINTAINER Chris Sim
+FROM alpine:3.6
 
-RUN apt-get update && apt-get -y install software-properties-common python-software-properties language-pack-en
-RUN export LANG=en_SG.UTF-8 && add-apt-repository -y ppa:ondrej/php
-
-RUN apt-get update && apt-get install -y \
-    php7.1 \
-    php7.1-xml \
-    php7.1-xsl \
-    php7.1-fpm \
-    php7.1-mbstring \
-    php7.1-readline \
-    php7.1-zip \
-    php7.1-mysql \
-    php7.1-phpdbg \
-    php7.1-interbase \
-    php7.1-sqlite3 \
-    php7.1-tidy \
-    php7.1-opcache \
-    php7.1-json \ 
-    php7.1-xmlrpc \
-    php7.1-curl \
-    php7.1-ldap \
-    php7.1-bz2 \
-    php7.1-cgi \
-    php7.1-cli \
-    php7.1-dev \
-    php7.1-intl \
-    php7.1-gmp \
-    php7.1-common \
-    php7.1-pgsql \
-    php7.1-bcmath \
-    php7.1-snmp \
-    php7.1-soap \
-    php7.1-mcrypt \
-    php7.1-gd \
-    php7.1-enchant \
+RUN apk --update add \
+    php7 \
+    php7-bcmath \
+    php7-dom \
+    php7-ctype \
+    php7-curl \
+    php7-fileinfo \
+    php7-fpm \
+    php7-gd \
+    php7-iconv \
+    php7-intl \
+    php7-json \
+    php7-mbstring \
+    php7-mcrypt \
+    php7-mysqli \
+    php7-opcache \
+    php7-openssl \
+    php7-redis \
+    php7-pdo \
+    php7-pdo_mysql \
+    php7-pdo_pgsql \
+    php7-pdo_sqlite \
+    php7-phar \
+    php7-posix \
+    php7-session \
+    php7-soap \
+    php7-xml \
+    php7-zlib \
+    php7-xmlreader \
+    php7-xmlwriter \
+    php7-zip \
+    php7-dev \
+    php7-pear \
     openssl \
     ca-certificates \
     git \
-    curl \
     wget \
     nodejs \
-    build-essential \
-    nginx
+    nodejs-npm
 
-    
 WORKDIR /tmp
 
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
-RUN apt-get update && apt-get -y install nodejs
-
-ENV GITHUBTOKEN=1f61e607aa1f81a4c978f3573e0f7487ecc7ff8d
+VOLUME /var/log/php
+VOLUME /var/www/html
+COPY ./www.conf /etc/php7/php-fpm.d/
 
 RUN wget https://getcomposer.org/installer && php installer && mv composer.phar /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 RUN npm install -g bower webpack gulp-cli grunt-cli
 
-EXPOSE 80 433
-RUN rm -rf /tmp/*
-COPY ./default.nginx.conf /etc/apache2/sites-available/default
-COPY ./init.sh /etc/bin/docker.sh
-RUN chmod +x /etc/bin/docker.sh
+EXPOSE 9000
+RUN mkdir /run/php && mkdir -p /var/www/html && mkdir -p /var/log/php/ && rm -rf /tmp/*
 
-RUN composer config --global github-oauth.github.com $GITHUBTOKEN && composer global require "fxp/composer-asset-plugin:^1.3.1"
+RUN sed -i 's/\;daemonize = yes/daemonize = no/' /etc/php7/php-fpm.conf
+RUN composer global require "fxp/composer-asset-plugin:^1.3.1"
 
 WORKDIR /var/www/html
-VOLUME /var/www/html
-VOLUME /var/log
 
-RUN apt-get clean
 
-CMD ['sh','/etc/bin/docker.sh']
+CMD ["rc-service","php-fpm7","--allow-to-run-as-root"]
