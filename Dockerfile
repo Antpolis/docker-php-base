@@ -59,4 +59,4 @@ RUN npm cache clean --force && rm -rf /tmp/*
 
 WORKDIR /var/www/html
 
-CMD ["rc-service","php-fpm7","--allow-to-run-as-root"]
+CMD ["php-fpm7","--allow-to-run-as-root"]
