@@ -1,4 +1,4 @@
-FROM php:7.4.27-fpm-alpine
+FROM php:7.4.27-fpm-alpine3.14
 
 RUN apk --update --no-cache add \
     openssl \
