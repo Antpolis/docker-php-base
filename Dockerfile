@@ -5,7 +5,9 @@ RUN apk --update --no-cache add \
     ca-certificates \
     git \
     wget \
-    nodejs
+    nodejs \
+    npm \ 
+    build-base
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions
