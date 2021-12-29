@@ -17,3 +17,6 @@ RUN install-php-extensions gd xdebug mbstring @composer bz2 csv exif imagick mcr
 COPY ./www.conf /etc/php7/php-fpm.d/
 
 WORKDIR /var/www/html
+
+ENTRYPOINT ["docker-php-entrypoint"]
+CMD ["php" "-a"]
