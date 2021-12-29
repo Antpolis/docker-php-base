@@ -1,6 +1,6 @@
 FROM php:7.4.27-fpm-alpine3.14
 
-RUN apk --update --no-cache add \
+RUN apk --update add \
     openssl \
     ca-certificates \
     git \
