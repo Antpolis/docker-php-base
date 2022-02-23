@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - stable
+      - dev
 
 jobs:
   docker:
@@ -19,9 +20,15 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF##*/})"
+        id: extract_branch
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: dailyvanity/php:latest
+          tags: | 
+            dailyvanity/php:${{ github.sha }} 
+            dailyvanity/php:${{ steps.extract_branch.outputs.branch }}
