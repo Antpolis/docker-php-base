@@ -21,4 +21,4 @@ COPY ./www.conf /etc/php7/php-fpm.d/
 WORKDIR /var/www/html
 
 ENTRYPOINT ["docker-php-entrypoint"]
-CMD ["php" "-a"]
+CMD ["php-fpm"]
