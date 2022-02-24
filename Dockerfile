@@ -17,6 +17,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions
 RUN install-php-extensions gd xdebug mbstring @composer bz2 csv exif imagick mcrypt mysqli redis soap tidy xsl yaml zip
 
 COPY ./www.conf /etc/php7/php-fpm.d/
+COPY ./php.ini /usr/local/etc/php/
 
 WORKDIR /var/www/html
 
