@@ -32,3 +32,4 @@ jobs:
           tags: | 
             dailyvanity/php:${{ github.sha }} 
             dailyvanity/php:${{ steps.extract_branch.outputs.branch }}
+            dailyvanity/php:latest
