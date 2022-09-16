@@ -1,6 +1,6 @@
 FROM php:7.4.30-fpm-alpine3.16
 
-ARG PHP_DEBUG="On"
+ARG PHP_DEBUG="on"
 
 RUN apk --update add \
     openssl \
