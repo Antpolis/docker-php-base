@@ -26,7 +26,6 @@ COPY ./php.ini /usr/local/etc/php/
 WORKDIR /var/www/html
 
 RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
-USER www-data
 
 ENTRYPOINT ["docker-php-entrypoint"]
 CMD ["php-fpm"]
