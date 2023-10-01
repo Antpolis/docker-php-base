@@ -23,9 +23,13 @@ RUN install-php-extensions gd xdebug mbstring @composer bz2 csv exif imagick mcr
 COPY ./zz-dailyvanity.conf /usr/local/etc/php-fpm.d/
 COPY ./php.ini /usr/local/etc/php/
 
+RUN mkdir -p /var/www/html
+
 WORKDIR /var/www/html
 
 RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
+RUN chown -Rf www-data /var/www/html
+RUN chmod -Rf 775 /var/www/html
 
 ENTRYPOINT ["docker-php-entrypoint"]
 CMD ["php-fpm"]
