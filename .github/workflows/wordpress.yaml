@@ -2,6 +2,9 @@ name: Latest Docker Image
 
 on:
   push:
+    tags:
+      - wordpress-v.*.*.*-sp*
+      - v.*.*.*-wordpress-sp*
     branches:
       - wordpress
 
