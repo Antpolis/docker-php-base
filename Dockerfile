@@ -27,8 +27,10 @@ RUN mkdir -p /var/www/html
 
 WORKDIR /var/www/html
 
-RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
-RUN chown -Rf www-data /var/www/html
+RUN addgroup -g 2000 docker-user
+RUN adduser -D -u 2000 -G docker-user docker-user
+
+RUN chown -Rf docker-user /var/www/html
 RUN chmod -Rf 775 /var/www/html
 
 ENTRYPOINT ["docker-php-entrypoint"]
