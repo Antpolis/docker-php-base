@@ -55,5 +55,5 @@ VOLUME [ "/var/www/html" ]
 
 RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
 
-ENTRYPOINT ["docker-php-entrypoint"]
-CMD ["/usr/local/bin/wp-entrypoint"]
+ENTRYPOINT ["/usr/local/bin/wp-entrypoint"]
+CMD ["php-fpm"]
