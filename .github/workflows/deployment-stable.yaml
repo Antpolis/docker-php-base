@@ -3,9 +3,7 @@ name: Latest Docker Image
 on:
   push:
     branches:
-      - master
       - stable
-      - dev
 
 jobs:
   docker:
@@ -30,5 +28,6 @@ jobs:
         with:
           push: true
           tags: | 
-            dailyvanity/php:${{ github.sha }} 
-            dailyvanity/php:${{ steps.extract_branch.outputs.branch }}
+            antpolis/php-fpm-nginx:${{ github.sha }} 
+            antpolis/php-fpm-nginx:${{ steps.extract_branch.outputs.branch }}
+            antpolis/php-fpm-nginx:latest
