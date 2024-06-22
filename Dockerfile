@@ -43,7 +43,7 @@ RUN sed -i "s/{PHP_DEBUG}/${PHP_DEBUG}/g" /usr/local/etc/php/php.ini
 RUN rm -rf /var/www/html/*
 RUN mkdir -p /var/www/html
 
-RUN chown -Rf docker-user /var/www/html
+RUN chown -Rf www-data /var/www/html
 RUN chmod -Rf 775 /var/www/html
 
 
