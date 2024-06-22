@@ -1,9 +1,6 @@
 #!/bin/sh
 set -e
 
-# first arg is `-f` or `--some-option`
-if [ "${1#-}" != "$1" ]; then
-	set -- wp "$@"
-fi
+nginx
 
-exec "$@"
+exec php-fpm "$@"

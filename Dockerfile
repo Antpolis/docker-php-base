@@ -17,7 +17,8 @@ RUN apk --update --no-cache add \
     bash \
     openssh \ 
     nginx \
-    shadow
+    shadow \ 
+    htop
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions
@@ -39,6 +40,7 @@ ENV PHP_DEBUG=$PHP_DEBUG
 
 RUN sed -i "s/{PHP_DEBUG}/${PHP_DEBUG}/g" /etc/php7/php-fpm.d/www.conf
 RUN sed -i "s/{PHP_DEBUG}/${PHP_DEBUG}/g" /usr/local/etc/php/php.ini
+RUN sed -i "s/user nginx;/user www-data;/g" /etc/nginx/nginx.conf
 
 RUN rm -rf /var/www/html/*
 RUN mkdir -p /var/www/html
@@ -54,4 +56,4 @@ VOLUME [ "/var/www/html" ]
 RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
 
 ENTRYPOINT ["docker-php-entrypoint"]
-CMD ["php-fpm"]
+CMD ["/usr/local/bin/wp-entrypoint"]
