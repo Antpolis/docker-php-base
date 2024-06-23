@@ -51,9 +51,9 @@ RUN chmod -Rf 775 /var/www/html
 
 WORKDIR /var/www/html
 
-VOLUME [ "/var/www/html" ]
+RUN usermod -u 2000 www-data && groupmod -g 2000 www-data
 
-RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
+VOLUME [ "/var/www/html" ]
 
 ENTRYPOINT ["/usr/local/bin/wp-entrypoint"]
 CMD ["php-fpm"]
