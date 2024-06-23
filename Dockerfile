@@ -34,7 +34,7 @@ RUN chmod +x wp-cli.phar
 RUN mv wp-cli.phar /usr/local/bin/wp
 RUN chmod +x /usr/local/bin/wp-entrypoint
 
-COPY ./config/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./config/nginx/nginx.conf /etc/nginx/http.d/default.conf
 
 ENV PHP_DEBUG=$PHP_DEBUG
 
