@@ -1,4 +1,4 @@
-FROM php:8.2.11-fpm-alpine3.18
+FROM php:8.2.22-fpm-alpine3.20
 
 RUN echo http://dl-2.alpinelinux.org/alpine/edge/community/ >> /etc/apk/repositories
 
