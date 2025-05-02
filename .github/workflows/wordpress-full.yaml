@@ -31,4 +31,4 @@ jobs:
         with:
           push: true
           tags: |             
-            dailyvanity/php:${{ steps.extract_branch.outputs.branch }}
+            antpolis/php:${{ steps.extract_branch.outputs.branch }}
